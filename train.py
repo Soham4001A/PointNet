@@ -195,8 +195,7 @@ class LMAInitialTransform(nn.Module):
 
         # ── residual: project original flat tensor, reshape same ─
         x_proj     = F.relu(self.proj(x))                    # (B, L, d_new)
-        y = y + x_proj                                            # residual add
-
+        y = y + x_proj                                            # residual add (TESTING!)
         return y, L
 
 
@@ -340,6 +339,8 @@ def main():
     parser.add_argument("--epochs",     type=int,   default=50)
     parser.add_argument("--lr",         type=float, default=1e-3)
     parser.add_argument("--val_split",  type=float, default=0.1)
+    parser.add_argument("--optim",      type=str,   default="DynAG",
+                        choices=["Adam", "DynAG"])
     # ---- model size knobs ----------------------------------------------
     parser.add_argument("--embed",      type=int,   default=64,
                         help="d0: embed dim after PointNet stem")
@@ -422,7 +423,10 @@ def main():
     # Loss, Optimiser (DynAG), Scheduler (optional)
     # ---------------------------------------------------------------------
     criterion = nn.CrossEntropyLoss()
-    optimiser = DynAG(model.parameters(), lr=args.lr)
+    if args.optim == "Adam":
+        optimiser = torch.optim.Adam(model.parameters(), lr=args.lr)
+    elif args.optim == "DynAG":
+        optimiser = DynAG(model.parameters(), lr=args.lr)
 
     # ---------------------------------------------------------------------
     # Training loop
