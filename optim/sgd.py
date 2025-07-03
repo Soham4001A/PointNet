@@ -3,12 +3,11 @@ r"""Implementation for Stochastic Gradient Descent optimizer."""
 # optim/dag.py
 from __future__ import annotations
 import math, torch
-from typing import Iterable, Optional, List
+from torch import Tensor
+from typing import Iterable, Optional, List, Callable
 from torch.optim.optimizer import Optimizer
 from typing import cast, List, Optional, Union
 
-import torch
-from torch import Tensor
 
 from .optimizer import (
     _default_to_fused_or_foreach,
@@ -64,13 +63,6 @@ class SGD(Optimizer):  # noqa: D101
             fused=fused,
         )
 
-import math
-from typing import Iterable, List, Optional, Tuple
-
-import torch
-from torch import Tensor
-from torch.optim.optimizer import Optimizer
-
 
 def _try_multi_tensor_std(grads: List[Tensor]) -> Optional[List[Tensor]]:
     """
@@ -84,7 +76,7 @@ def _try_multi_tensor_std(grads: List[Tensor]) -> Optional[List[Tensor]]:
     except Exception:
         return None
 
-class DAG(Optimizer):
+class DynAG(Optimizer):
     r"""Dynamic-Alpha Gradient (DAG) — AlphaGrad + adaptive α + RMS-shrink."""
 
     # -------------------------------------------------------------- #

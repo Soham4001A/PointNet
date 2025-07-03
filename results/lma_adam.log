@@ -1,0 +1,54 @@
+(.venv) (base) sohamsane@Sohams-MacBook-Pro PointNet % python train.py --epochs 10 --summary --flops --optim Adam --use_lma
+Device = cpu
+Preparing ModelNet10 loaders...
+
+--- Model architecture ---
+PointNetClassifier(
+  (backbone): PointNetBackbone(
+    (mlp): Sequential(
+      (0): Linear(in_features=3, out_features=64, bias=True)
+      (1): ReLU()
+      (2): Linear(in_features=64, out_features=128, bias=True)
+      (3): ReLU()
+      (4): Linear(in_features=128, out_features=64, bias=True)
+    )
+  )
+  (lma): LMAInitialTransform(
+    (proj): Linear(in_features=64, out_features=32, bias=False)
+  )
+  (blocks): ModuleList(
+    (0-1): 2 x TransformerBlock(
+      (attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=32, out_features=32, bias=True)
+      )
+      (ff): Sequential(
+        (0): Linear(in_features=32, out_features=128, bias=True)
+        (1): ReLU()
+        (2): Linear(in_features=128, out_features=32, bias=True)
+      )
+      (ln1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      (ln2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      (drop): Dropout(p=0.1, inplace=False)
+    )
+  )
+  (pool): AdaptiveMaxPool1d(output_size=1)
+  (head): Linear(in_features=32, out_features=10, bias=True)
+)
+--- End of model architecture ---
+
+[ptflops]  MACs (≅FLOPs): 5.98 GMac    |   Params: 44.62 k
+/Users/sohamsane/Documents/Coding Projects/PointNet/.venv/lib/python3.12/site-packages/torch/utils/data/dataloader.py:683: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, then device pinned memory won't be used.
+  warnings.warn(warn_msg)
+Epoch 001/10  train  loss 1.5140  acc 0.523 | val loss 0.9770  acc 0.684   [24.8s]
+Epoch 002/10  train  loss 0.8062  acc 0.752 | val loss 0.6650  acc 0.772   [24.8s]
+Epoch 003/10  train  loss 0.6539  acc 0.786 | val loss 0.5590  acc 0.799   [23.8s]
+Epoch 004/10  train  loss 0.5536  acc 0.823 | val loss 0.4767  acc 0.845   [25.1s]
+Epoch 005/10  train  loss 0.4772  acc 0.842 | val loss 0.4522  acc 0.860   [25.5s]
+Epoch 006/10  train  loss 0.4583  acc 0.850 | val loss 0.3842  acc 0.867   [23.9s]
+Epoch 007/10  train  loss 0.4095  acc 0.867 | val loss 0.3640  acc 0.875   [24.1s]
+Epoch 008/10  train  loss 0.3836  acc 0.872 | val loss 0.3638  acc 0.880   [25.0s]
+Epoch 009/10  train  loss 0.3557  acc 0.887 | val loss 0.3347  acc 0.882   [24.3s]
+Epoch 010/10  train  loss 0.3260  acc 0.888 | val loss 0.4123  acc 0.857   [24.8s]
+
+TEST  accuracy: 80.727%  (loss 0.5535)
+Best validation accuracy seen: 0.8822055137844611

@@ -42,7 +42,7 @@ from typing import Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from optim.sgd import DAG as DynAG                    # <- provided in your env
+from optim.sgd import DynAG                   
 
 #  ---------------- torch_geometric for ModelNet40 ------------------------
 from torch_geometric.data import Data
@@ -426,7 +426,7 @@ def main():
     if args.optim == "Adam":
         optimiser = torch.optim.Adam(model.parameters(), lr=args.lr)
     elif args.optim == "DynAG":
-        optimiser = DynAG(model.parameters(), lr=args.lr)
+        optimiser = DynAG(model.parameters(), lr=args.lr, k_val=1.5) 
 
     # ---------------------------------------------------------------------
     # Training loop
