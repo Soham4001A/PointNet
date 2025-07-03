@@ -426,7 +426,8 @@ def main():
     if args.optim == "Adam":
         optimiser = torch.optim.Adam(model.parameters(), lr=args.lr)
     elif args.optim == "DynAG":
-        optimiser = DynAG(model.parameters(), lr=args.lr, k_val=1.5) 
+        optimiser = DynAG(model.parameters(), lr=args.lr, k_val=1.5,
+                          hyper=dict(p_star=0.15, eps = 1e-8)) 
 
     # ---------------------------------------------------------------------
     # Training loop
